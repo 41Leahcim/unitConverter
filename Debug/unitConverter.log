@@ -1,8 +1,0 @@
-﻿  main.cpp
-F:\programming\visual_studio\projects\c++\unitConverter\main.cpp(12,20): warning C4018: '<': signed/unsigned mismatch
-F:\programming\visual_studio\projects\c++\unitConverter\main.cpp(16,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\programming\visual_studio\projects\c++\unitConverter\main.cpp(21,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-F:\programming\visual_studio\projects\c++\unitConverter\main.cpp(22,38): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-F:\programming\visual_studio\projects\c++\unitConverter\main.cpp(22,89): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-F:\programming\visual_studio\projects\c++\unitConverter\main.cpp(22,108): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-  unitConverter.vcxproj -> F:\programming\visual_studio\projects\c++\unitConverter\Debug\unitConverter.exe

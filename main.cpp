@@ -1,77 +1,114 @@
 #include <iostream>
+#include <map>
 #include <vector>
-#include <fstream>
-using namespace std;
 
-double mod(double a, double b) {
-	return a - (int)(a / b) * b;
+void addUnits(std::vector<std::map<std::string, double>>& units){
+    // add units of distance
+    units[0].insert(std::pair<std::string, double>("mm", 1));
+    units[0].insert(std::pair<std::string, double>("cm", 10));
+    units[0].insert(std::pair<std::string, double>("i", 25.4));
+    units[0].insert(std::pair<std::string, double>("dm", 100));
+    units[0].insert(std::pair<std::string, double>("f", 304.8));
+    units[0].insert(std::pair<std::string, double>("y", 914.4));
+    units[0].insert(std::pair<std::string, double>("m", 1000));
+    units[0].insert(std::pair<std::string, double>("Dm", 10000));
+    units[0].insert(std::pair<std::string, double>("Hm", 100000));
+    units[0].insert(std::pair<std::string, double>("Km", 1000000));
+    units[0].insert(std::pair<std::string, double>("M", 1609344));
+
+    // add units of time
+    units[1].insert(std::pair<std::string, double>("s", 1));
+    units[1].insert(std::pair<std::string, double>("m", 60));
+    units[1].insert(std::pair<std::string, double>("h", 3600));
+    units[1].insert(std::pair<std::string, double>("d", 3600 * 24));
+    units[1].insert(std::pair<std::string, double>("w", 3600 * 24 * 7));
+    units[1].insert(std::pair<std::string, double>("y", 3600 * 24 * 365.25));
+
+    // add units of temperature
+    units[2].insert(std::pair<std::string, double>("K", 1));
+    units[2].insert(std::pair<std::string, double>("C", 2));
+    units[2].insert(std::pair<std::string, double>("F", 3));
 }
 
-void convert(vector<string> Tunits, vector<double> units) {
-	float choice[3];
-	cout << "You have choosen to convert units of distance.\nWhich unit do you want to convert?\n\t";
-	for (int i = 0; i < Tunits.size(); i++) {
-		cout << i << ") " + Tunits[i] + "\n\t";
-	}
-	cin >> choice[0];
-	choice[0] = mod(choice[0],units.size());
-	cout << "How much of that unit do you wan to convert? ";
-	cin >> choice[1];
-	cout << "Which unit do you want to convert it to? ";
-	cin >> choice[2];
-	choice[2] = mod(choice[2],Tunits.size());
-	cout << choice[1] << Tunits[choice[0]] + " is equal to " << choice[1] * units[choice[0]] / units[choice[2]] << Tunits[choice[2]] + "\n\n";
+void getValueUnit(std::pair<double, std::string>& valueUnit){
+    std::cout << "Available distance units: mm (millimeters), cm (centimeters), i (inches), dm (decimeters), f (feet), y (yard), m (meters), Dm (decameters), Hm (hectometers), Km (kilometers), M (mile)\n";
+    std::cout << "Available time units: s (seconds), m (minutes), h (hours), d (days), w (weeks), y (years)\n";
+    std::cout << "Available temperature units: K (kelvin), C (celsius), F (fahrenheit)\n\n";
+    std::cout << "Enter the amount: ";
+    std::cin >> valueUnit.first;
+    std::cout << "Enter the unit: ";
+    std::cin >> valueUnit.second;
 }
 
-int main()
-{
-	cout << "Program can only convert integers and results will also be integers.\n";
-	//units of distance
-	vector<double> Dunits{ 0.001,0.01,0.0254,0.1,0.3048,0.9144,1,10,100,1000,1609.344 };
-	vector<string> TDunits{ "milimeters","centimeters","inches","decimeters","feet","yards","meters","decameters","hectometers","kilometers","miles" };
-	
-	//units of volume
-	vector<double> Vunits{0.001,0.00492892,0.00591939,0.01,0.0147868,0.0177582,0.1,1,3.7854,4.54609,10};
-	vector<string> TVunits{"millilitres","teaspoons(US)","teaspoons(imperial)","centilitres","tablespoons(US)","tablespoons(imperial)","decilitres","litres",
-		"gallon(US)","gallons(imperial)","decalitres"};
-	//units of time
-	vector<double> Tunits{1/3600,1/60,1,24,24*365.25};
-	for (int i = 4; i < 7; i++) Tunits.push_back(Tunits[i] * 10);
-	vector<string> TTunits{"seconds","minutes","hours","days","years","decades","centuries","millennia"};
-	
-	//units of speed
-	vector<double> Sunits{1, 1.09728 ,1.609344 ,1.852001 ,3.6};
-	vector<string> TSunits{"km per hour","feet per second","miles per hour","knot","meters per second"};
-	int choice;
-	do {
-		cout << "What do you want to convert?\n\t1) units of distance\n\t2) units of volume\n\t3) units of time\n\t4) units of speed\n\t0) nothing\n\t";
-		cin >> choice;
-		choice %= 5;
-		cout << "\n\n";
-		switch (choice) {
-		case 0:
-			cout << "You have choosen to stop the program. It will close when you enter a value.\n";
-			cin >> choice;
-			return 0;
-		case 1:
-			convert(TDunits, Dunits);
-			break;
-		case 2:
-			convert(TVunits, Vunits);
-			break;
-		case 3:
-			convert(TTunits, Tunits);
-			break;
-		case 4:
-			convert(TSunits, Sunits);
-			break;
-		default:
-			cout << "Something went wrong.\nMail the maker of this program at \"michael-scholten@hotmail.nl\" with the error file attached.\n";
-			ofstream f("errorFile.txt");
-			f << "Error message: " << choice;
-			f.close();
-			cin >> choice;
-			return 1;
-		}
-	} while (1);
+void getUnitTo(std::string& unit){
+    std::cout << "Enter the unit to convert to: ";
+    std::cin >> unit;
+}
+
+uint8_t checkUnits(const std::pair<double, std::string>& from, const std::pair<double, const std::string>& to, const std::vector<std::map<std::string, double>>& units){
+    uint8_t i;
+    for(i = 0;i < units.size();i++){
+        if(units[i].find(from.second) != units[i].end() && units[i].find(to.second) != units[i].end()){
+            return i;
+        }
+    }
+    return 3;
+}
+
+void convert(const std::pair<double, std::string>& from, std::pair<double, std::string>& to, const std::map<std::string, double>& units){
+    to.first = from.first * units.find(from.second)->second / units.find(to.second)->second;
+}
+
+void convertTemperature(const std::pair<double, std::string>& from, std::pair<double, std::string>& to){
+    if(from.second == "K" && to.second == "C"){
+        to.first = from.first - 273.15;
+    }else if(from.second == "K" && to.second == "F"){
+        to.first = (from.first - 273.15) * 1.8 + 32;
+    }else if(from.second == "C" && to.second == "K"){
+        to.first = from.first + 273.15;
+    }else if(from.second == "C" && to.second == "F"){
+        to.first = from.first * 1.8 + 32;
+    }else if(from.second == "F" && to.second == "K"){
+        to.first = (from.first - 32) / 1.8 + 273.15;
+    }else if(from.second == "F" && to.second == "C"){
+        to.first = (from.first - 32) / 1.8;
+    }else{
+        to.first = from.first;
+    }
+}
+
+void printResult(const std::pair<double, std::string>& from, std::pair<double, std::string>& to){
+    std::cout << from.first << " " << from.second << " <=> " << to.first << " " << to.second << "\n";
+}
+
+int main(){
+    std::pair<double, std::string> from, to;
+    std::map<std::string, double> distanceUnits;
+    std::map<std::string, double> timeUnits;
+    std::map<std::string, double> temperatureUnits;
+    std::vector<std::map<std::string, double>> units = {distanceUnits, timeUnits, temperatureUnits};
+    while(1){
+        addUnits(units);
+        getValueUnit(from);
+        getUnitTo(to.second);
+        switch(checkUnits(from, to, units)){
+            case 0:
+                convert(from, to, units[0]);
+                printResult(from, to);
+                break;
+            case 1:
+                convert(from, to, units[1]);
+                printResult(from, to);
+                break;
+            case 2:
+                convertTemperature(from, to);
+                printResult(from, to);
+                break;
+            default:
+                std::cout << "Invalid units: '" << from.second << "' => '" << to.second << "'\n";
+        }
+        std::cin.clear();
+        std::cin.get();
+        std::cout << "\n\n\n\n";
+    }
 }
